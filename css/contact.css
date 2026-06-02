@@ -1,0 +1,325 @@
+/* Contact page specific styles */
+
+body {
+  overflow: hidden;
+}
+
+header {
+  z-index: 10;
+}
+
+footer {
+  padding: 15px 40px;
+  position: relative;
+  z-index: 10;
+}
+
+main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  overflow: hidden;
+}
+
+.diagram-container {
+  position: relative;
+  width: calc(100% - 40px);
+  height: calc(100% - 40px);
+  max-width: 100%;
+  max-height: 100%;
+}
+
+/* Box model layers */
+.box-layer {
+  position: absolute;
+  border: 1px solid;
+  transition: border-color 0.3s ease, border-width 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+}
+
+.margin-box {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-color: #e0e0e0;
+}
+
+.border-box {
+  top: 40px;
+  left: 40px;
+  right: 40px;
+  bottom: 40px;
+  border-color: #d0d0d0;
+}
+
+.padding-box {
+  top: 80px;
+  left: 80px;
+  right: 80px;
+  bottom: 80px;
+  border-color: #c0c0c0;
+}
+
+/* Hover states */
+.margin-box.active {
+  border-color: #000;
+}
+
+.border-box.active {
+  border-color: #000;
+}
+
+.padding-box.active {
+  border-color: #000;
+}
+
+/* Layer labels */
+.layer-label {
+  position: absolute;
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  color: #ccc;
+  text-transform: lowercase;
+  transition: color 0.15s ease;
+}
+
+.layer-label.active {
+  color: #000;
+}
+
+.margin-label {
+  top: 4px;
+  left: 6px;
+}
+
+.border-label {
+  top: 44px;
+  left: 46px;
+}
+
+.padding-label {
+  top: 84px;
+  left: 86px;
+}
+
+/* Dimension labels */
+.dimension-label {
+  position: absolute;
+  font-size: 10px;
+  font-weight: 400;
+  color: #999;
+  letter-spacing: 0.3px;
+}
+
+.dimension-width {
+  top: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.dimension-height {
+  right: -40px;
+  top: 50%;
+  transform: translateY(-50%) rotate(90deg);
+}
+
+/* Annotations - matching bio typography */
+.annotation {
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.3;
+  color: #1a1a1a;
+}
+
+.annotation a {
+  color: #1a1a1a;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease;
+}
+
+.annotation a:hover {
+  border-bottom-color: #1a1a1a;
+}
+
+.top-right-annotation {
+  position: absolute;
+  top: 92px;
+  right: 92px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.right-annotation {
+  position: absolute;
+  right: 92px;
+  bottom: 92px;
+  text-align: left;
+}
+
+.right-annotation .label {
+  color: #999;
+  font-size: 10px;
+  letter-spacing: 0.3px;
+  margin-bottom: 2px;
+}
+
+.right-annotation .location {
+  margin-bottom: 16px;
+}
+
+.right-annotation .links {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-start;
+}
+
+.bottom-left-bio {
+  position: absolute;
+  left: 92px;
+  bottom: 92px;
+  max-width: 220px;
+  text-align: justify;
+}
+
+.bottom-left-bio p {
+  font-size: 11px;
+  line-height: 1.3;
+  margin-bottom: 8px;
+}
+
+.bottom-left-bio p:last-child {
+  margin-bottom: 0;
+}
+
+.center-clock {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 13px;
+  font-weight: 400;
+  color: #ddd;
+  letter-spacing: 1px;
+}
+
+/* Responsive overrides for contact page */
+@media (max-width: 1024px) {
+  .diagram-container {
+    width: calc(100% - 20px);
+    height: calc(100% - 20px);
+  }
+
+  .top-right-annotation {
+    top: 70px;
+    right: 70px;
+    font-size: 12px;
+  }
+
+  .right-annotation {
+    right: 70px;
+    bottom: 70px;
+    font-size: 12px;
+  }
+
+  .bottom-left-bio {
+    left: 70px;
+    bottom: 70px;
+    max-width: 220px;
+  }
+
+  .center-clock {
+    font-size: 12px;
+  }
+
+  .dimension-label {
+    font-size: 9px;
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    height: 100%;
+    min-height: 0;
+    max-height: 100%;
+    overflow: hidden !important;
+  }
+
+  main {
+    padding: 5px 20px 20px 20px;
+    min-height: 0;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  footer {
+    padding: 4px 15px;
+    flex-shrink: 0;
+  }
+
+  .diagram-container {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  /* Hide boxes and their labels on mobile */
+  .box-layer,
+  .layer-label,
+  .dimension-label {
+    display: none;
+  }
+
+  /* Reposition clock on mobile */
+  .center-clock {
+    top: 10px;
+    left: 0;
+    transform: none;
+    color: #1a1a1a;
+  }
+
+  /* Keep text positioning same as desktop */
+  .top-right-annotation {
+    top: 10px;
+    right: 0;
+  }
+
+  .right-annotation {
+    right: 0;
+    bottom: 80px;
+    text-align: right;
+  }
+
+  .bottom-left-bio {
+    left: 0;
+    bottom: 80px;
+    max-width: 50%;
+  }
+}
+
+@media (max-width: 480px) {
+  main {
+    padding: 5px 15px;
+  }
+
+  .top-right-annotation {
+    top: 10px;
+    right: 0;
+  }
+
+  .right-annotation {
+    right: 0;
+    bottom: 80px;
+  }
+
+  .bottom-left-bio {
+    left: 0;
+    bottom: 80px;
+    max-width: 55%;
+  }
+}

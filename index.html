@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from www.komal-yadav.com/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 02 Jun 2026 18:36:18 GMT -->
+<!-- Added by HTTrack -->
+<meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>fleur.</title>
+  <link rel="preload" href="css/shared.css" as="style">
+  <link rel="preload" href="css/index.css" as="style">
+  <link rel="preload" href="background.webp" as="image">
+  <link rel="stylesheet" href="css/shared.css">
+  <link rel="stylesheet" href="css/index.css">
+</head>
+
+<body>
+
+  <header>
+    <div class="name"><a href="index.html">fleur.</a></div>
+    <div class="header-right">
+      <p class="bio">fleur is a bespoke floral service offering curated, artful arrangements for every occasion. we bring nature's beauty into your space with exquisite bouquets.</p>
+      <nav>
+        <a href="index.html">home</a>
+        <a href="flowers.html">flowers</a>
+        <a href="packages.html">packages</a>
+        <a href="contact.html">contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main"></main>
+
+
+
+  <footer>
+    <span>angeles, philippines</span>
+    <span>© 2026 fleur. all rights reserved.</span>
+  </footer>
+
+  <script>
+
+    // Main images that appear in the random 5-image rotation
+    const imageData = [
+      { src: 'img/054003dd67b55e819b22521ff9458bbf.jpg', srcSm: 'img/054003dd67b55e819b22521ff9458bbf.jpg', type: 'img', aspectRatio: 3 / 4 },
+      { src: 'img/3ca0317f2b656c546de6f8172dbb6215.jpg', srcSm: 'img/3ca0317f2b656c546de6f8172dbb6215.jpg', type: 'img', aspectRatio: 3 / 4 },
+      { src: 'img/5a87e78bbe1f3b272df0105bf6d13633.jpg', srcSm: 'img/5a87e78bbe1f3b272df0105bf6d13633.jpg', type: 'img', aspectRatio: 3 / 4 },
+    ];
+
+    const mainContainer = document.getElementById('main');
+    let imageElements = [];
+    let currentVisible = [];
+    let visibilityHistory = [[], []];
+    let currentPositions = [];
+    let rotationInterval = null;
+
+    const PADDING = 30;
+
+    function getPadding() {
+      const width = window.innerWidth;
+      if (width <= 480) return 35;
+      if (width <= 768) return 30;
+      return PADDING;
+    }
+
+    function getVisibleCount() {
+      return 1;
+    }
+
+    function getImageSize() {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      const minDim = Math.min(width, height);
+
+      if (width <= 480) {
+        return minDim * 0.38;
+      } else if (width <= 768) {
+        return minDim * 0.36;
+      } else if (width <= 1024) {
+        return minDim * 0.28;
+      } else {
+        return minDim * 0.26;
+      }
+    }
+
+    function getBounds() {
+      const mainRect = mainContainer.getBoundingClientRect();
+      const padding = getPadding();
+      const footer = document.querySelector('footer');
+      const footerHeight = footer ? footer.getBoundingClientRect().height : 0;
+      const isMobile = window.innerWidth <= 768;
+      let bottomBound;
+      if (isMobile) {
+        // Use window.innerHeight for reliable visible viewport on mobile
+        const visibleMainHeight = window.innerHeight - mainRect.top;
+        bottomBound = visibleMainHeight - footerHeight - padding * 2;
+      } else {
+        bottomBound = mainRect.height - padding;
+      }
+      return {
+        left: padding,
+        top: padding,
+        right: mainRect.width - padding,
+        bottom: bottomBound,
+        width: mainRect.width,
+        height: mainRect.height
+      };
+    }
+
+    function calculateImageDimensions(aspectRatio, sizeMultiplier = 1) {
+      const baseSize = getImageSize() * sizeMultiplier;
+
+      let width, height;
+      if (aspectRatio >= 1) {
+        width = baseSize * aspectRatio;
+        height = baseSize;
+      } else {
+        width = baseSize;
+        height = baseSize / aspectRatio;
+      }
+
+      return { width, height };
+    }
+
+    function rectsOverlap(r1, r2, margin = 4) {
+      const width = window.innerWidth;
+      const adjustedMargin = width <= 480 ? 45 : (width <= 768 ? 40 : margin);
+
+      return !(r1.right + adjustedMargin < r2.left ||
+        r1.left > r2.right + adjustedMargin ||
+        r1.bottom + adjustedMargin < r2.top ||
+        r1.top > r2.bottom + adjustedMargin);
+    }
+
+    function findNonOverlappingPosition(imgWidth, imgHeight, existingRects, bounds) {
+      const maxAttempts = 100;
+
+      for (let attempt = 0; attempt < maxAttempts; attempt++) {
+        const x = bounds.left + Math.random() * (bounds.right - bounds.left - imgWidth);
+        const y = bounds.top + Math.random() * (bounds.bottom - bounds.top - imgHeight);
+
+        const newRect = {
+          left: x,
+          top: y,
+          right: x + imgWidth,
+          bottom: y + imgHeight
+        };
+
+        if (newRect.left < bounds.left || newRect.right > bounds.right ||
+          newRect.top < bounds.top || newRect.bottom > bounds.bottom) {
+          continue;
+        }
+
+        let overlaps = false;
+        for (const rect of existingRects) {
+          if (rectsOverlap(newRect, rect)) {
+            overlaps = true;
+            break;
+          }
+        }
+
+        if (!overlaps) {
+          return { x, y, rect: newRect };
+        }
+      }
+
+      return null;
+    }
+
+    function generatePositions(indices) {
+      const bounds = getBounds();
+      const positions = [];
+      const rects = [];
+      const isMobile = window.innerWidth <= 768;
+
+      for (const idx of indices) {
+        const img = imageData[idx];
+        let placed = false;
+        let sizeMultiplier = 1;
+
+        // On mobile, always use full size (no reduction) and increase attempts
+        const maxAttempts = isMobile ? 200 : 5;
+
+        for (let sizeAttempt = 0; sizeAttempt < maxAttempts && !placed; sizeAttempt++) {
+          const dims = calculateImageDimensions(img.aspectRatio, sizeMultiplier);
+          const position = findNonOverlappingPosition(dims.width, dims.height, rects, bounds);
+
+          if (position) {
+            positions.push({
+              index: idx,
+              x: position.x,
+              y: position.y,
+              width: dims.width,
+              height: dims.height
+            });
+            rects.push(position.rect);
+            placed = true;
+          } else {
+            // Don't reduce size on mobile
+            if (!isMobile) {
+              sizeMultiplier *= 0.80;
+            }
+          }
+        }
+
+        // On mobile, if still not placed after all attempts, allow overlap
+        if (!placed) {
+          const dims = calculateImageDimensions(img.aspectRatio, isMobile ? 1 : 0.5);
+          let bestPosition = null;
+          let minOverlap = Infinity;
+
+          for (let attempt = 0; attempt < 50; attempt++) {
+            const x = bounds.left + Math.random() * Math.max(0, bounds.right - bounds.left - dims.width);
+            const y = bounds.top + Math.random() * Math.max(0, bounds.bottom - bounds.top - dims.height);
+
+            const testRect = {
+              left: x,
+              top: y,
+              right: x + dims.width,
+              bottom: y + dims.height
+            };
+
+            let overlapCount = 0;
+            for (const rect of rects) {
+              if (rectsOverlap(testRect, rect)) {
+                overlapCount++;
+              }
+            }
+
+            if (overlapCount < minOverlap) {
+              minOverlap = overlapCount;
+              bestPosition = { x, y };
+              if (overlapCount === 0) break;
+            }
+          }
+
+          if (bestPosition) {
+            positions.push({
+              index: idx,
+              x: Math.max(bounds.left, Math.min(bestPosition.x, bounds.right - dims.width)),
+              y: Math.max(bounds.top, Math.min(bestPosition.y, bounds.bottom - dims.height)),
+              width: dims.width,
+              height: dims.height
+            });
+          }
+        }
+      }
+
+      return positions;
+    }
+
+    function createImageElements() {
+      mainContainer.innerHTML = '';
+      imageElements = [];
+
+      for (let i = 0; i < imageData.length; i++) {
+        const img = imageData[i];
+        const container = document.createElement('div');
+        container.className = 'image-container';
+        container.dataset.index = i;
+
+        let mediaElement;
+        if (img.type === 'video') {
+          mediaElement = document.createElement('video');
+          mediaElement.dataset.src = img.src;
+          mediaElement.muted = true;
+          mediaElement.loop = true;
+          mediaElement.playsInline = true;
+          mediaElement.setAttribute('playsinline', '');
+          mediaElement.setAttribute('webkit-playsinline', '');
+          mediaElement.defaultMuted = true;
+          mediaElement.preload = 'none';
+        } else {
+          mediaElement = document.createElement('img');
+          mediaElement.dataset.src = img.srcSm || img.src;
+          mediaElement.dataset.srcFull = img.src;
+          mediaElement.loading = 'lazy';
+          mediaElement.decoding = 'async';
+          mediaElement.alt = '';
+        }
+
+        container.appendChild(mediaElement);
+        mainContainer.appendChild(container);
+        imageElements.push(container);
+      }
+    }
+
+    function applyPositions(positions) {
+      imageElements.forEach(el => {
+        el.classList.remove('visible');
+        el.style.display = 'none';
+        const video = el.querySelector('video');
+        if (video) {
+          video.pause();
+        }
+      });
+
+      positions.forEach(pos => {
+        const el = imageElements[pos.index];
+        el.style.left = `${pos.x}px`;
+        el.style.top = `${pos.y}px`;
+        el.style.width = `${pos.width}px`;
+        el.style.height = `${pos.height}px`;
+        el.style.display = 'block';
+
+        setTimeout(() => {
+          el.classList.add('visible');
+
+          const img = el.querySelector('img');
+          if (img && !img.hasAttribute('src')) {
+            img.src = img.dataset.src;
+          }
+
+          const video = el.querySelector('video');
+          if (video) {
+            if (!video.hasAttribute('src')) {
+              video.src = video.dataset.src;
+            }
+            video.muted = true;
+            video.setAttribute('playsinline', 'true');
+            video.loop = true;
+            video.play().catch(e => console.log('Play prevented:', e));
+          }
+        }, 100 + positions.indexOf(pos) * 80);
+      });
+
+      currentPositions = positions;
+    }
+
+    function getExcludedIndices() {
+      return [...visibilityHistory[0], ...visibilityHistory[1]];
+    }
+
+    function selectNextImages() {
+      const visibleCount = getVisibleCount();
+      const excluded = getExcludedIndices();
+      const allIndices = Array.from({ length: imageData.length }, (_, i) => i);
+      let available = allIndices.filter(idx => !excluded.includes(idx));
+
+      available = available.sort(() => Math.random() - 0.5);
+
+      let selected = available.slice(0, visibleCount);
+
+      if (selected.length < visibleCount) {
+        const fromOldHistory = visibilityHistory[1].filter(idx =>
+          !selected.includes(idx) && !visibilityHistory[0].includes(idx)
+        ).sort(() => Math.random() - 0.5);
+        selected = selected.concat(fromOldHistory.slice(0, visibleCount - selected.length));
+      }
+
+      return selected.slice(0, visibleCount);
+    }
+
+    function fadeOutCurrent(callback) {
+      currentPositions.forEach(pos => {
+        const el = imageElements[pos.index];
+        el.classList.remove('visible');
+      });
+
+      setTimeout(callback, 1000);
+    }
+
+    function showNextSet() {
+      fadeOutCurrent(() => {
+        visibilityHistory[1] = visibilityHistory[0];
+        visibilityHistory[0] = [...currentVisible];
+
+        currentVisible = selectNextImages();
+        const positions = generatePositions(currentVisible);
+        applyPositions(positions);
+      });
+    }
+
+    function startRotation() {
+      currentVisible = selectNextImages();
+      const positions = generatePositions(currentVisible);
+      applyPositions(positions);
+
+      const interval = 4000;
+      rotationInterval = setInterval(showNextSet, interval);
+    }
+
+    function stopRotation() {
+      if (rotationInterval) {
+        clearInterval(rotationInterval);
+        rotationInterval = null;
+      }
+    }
+
+    // Handle resize
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        if (currentVisible.length > 0) {
+          const positions = generatePositions(currentVisible);
+
+          currentPositions.forEach(pos => {
+            const el = imageElements[pos.index];
+            el.style.transition = 'none';
+          });
+
+          applyPositions(positions);
+
+          setTimeout(() => {
+            imageElements.forEach(el => {
+              el.style.transition = '';
+            });
+          }, 50);
+        }
+      }, 150);
+    });
+
+    // Initialize
+    createImageElements();
+    setTimeout(startRotation, 500);
+
+    // Enable video playback on first user interaction
+    let videosEnabled = false;
+    const enableAllVideos = () => {
+      if (!videosEnabled) {
+        videosEnabled = true;
+      }
+      setTimeout(() => {
+        currentPositions.forEach(pos => {
+          const el = imageElements[pos.index];
+          const video = el.querySelector('video');
+          if (video && video.paused && video.hasAttribute('src')) {
+            video.muted = true;
+            video.setAttribute('playsinline', 'true');
+            video.loop = true;
+            video.play().catch(e => {
+              setTimeout(() => {
+                video.play().catch(err => console.log('Play retry failed:', err));
+              }, 100);
+            });
+          }
+        });
+      }, 200);
+    };
+
+    setTimeout(enableAllVideos, 500);
+    document.addEventListener('touchstart', enableAllVideos, { once: true });
+    document.addEventListener('click', enableAllVideos, { once: true });
+    document.addEventListener('scroll', enableAllVideos, { passive: true, once: true });
+
+
+
+
+  </script>
+
+</body>
+
+<!-- Mirrored from www.komal-yadav.com/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 02 Jun 2026 18:36:25 GMT -->
+
+</html>

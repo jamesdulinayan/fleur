@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from www.komal-yadav.com/contact.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 02 Jun 2026 18:36:28 GMT -->
+<!-- Added by HTTrack -->
+<meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>fleur. - contact</title>
+  <link rel="preload" href="css/shared.css" as="style">
+  <link rel="preload" href="css/contact.css" as="style">
+  <link rel="stylesheet" href="css/shared.css">
+  <link rel="stylesheet" href="css/contact.css">
+</head>
+
+<body>
+
+  <header>
+    <div class="name"><a href="index.html">fleur.</a></div>
+    <div class="header-right">
+      <p class="bio">fleur is a bespoke floral service offering curated, artful arrangements for every occasion. we bring nature's beauty into your space with exquisite bouquets.</p>
+      <nav>
+        <a href="index.html">home</a>
+        <a href="flowers.html">flowers</a>
+        <a href="packages.html">packages</a>
+        <a href="contact.html">contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="diagram-container" id="diagram">
+      <!-- Dimension labels -->
+      <span class="dimension-label dimension-width" id="dim-width"></span>
+      <span class="dimension-label dimension-height" id="dim-height"></span>
+
+      <!-- Box model layers -->
+      <div class="box-layer margin-box" id="margin-box"></div>
+      <div class="box-layer border-box" id="border-box"></div>
+      <div class="box-layer padding-box" id="padding-box"></div>
+
+      <!-- Layer labels -->
+      <span class="layer-label margin-label" id="margin-label">margin</span>
+      <span class="layer-label border-label" id="border-label">border</span>
+      <span class="layer-label padding-label" id="padding-label">padding</span>
+
+      <!-- Top-right annotation -->
+      <div class="top-right-annotation annotation">
+        for inquiries and commissions
+      </div>
+
+      <!-- Center clock -->
+      <div class="center-clock" id="clock"></div>
+
+      <!-- Right-side annotations -->
+      <div class="right-annotation annotation">
+        <div class="links">
+          <div><a href="https://www.patreon.com/KomalYadav" target="_blank">patreon</a></div>
+          <div><a href="https://instagram.com/komalyad.av" target="_blank">instagram</a></div>
+          <div><a href="https://www.tiktok.com/@komalyad.av" target="_blank">tiktok</a></div>
+          <div><a href="https://www.linkedin.com/in/komaly/" target="_blank">linkedin</a></div>
+          <div><a href="https://www.youtube.com/@iso-komal" target="_blank">youtube</a></div>
+          <div><a href="mailto:komalyadav.studio@gmail.com">email</a></div>
+        </div>
+      </div>
+
+      <!-- Bottom-left bio text -->
+      <div class="bottom-left-bio annotation">
+        <p>Focused on creating thoughtful digital work that blends craftsmanship, culture, and modern design — aspiring
+          to collaborate with luxury houses and creative studios. With a training in software engineering shaped by <a
+            href="https://www.linkedin.com/in/komaly/" target="_blank">UC Berkeley and Microsoft</a>, I bring a deep
+          technical foundation to my creative practice.</p>
+        <p>My work draws inspiration from the intersection of technology, art, and lived experience, exploring how
+          digital mediums can convey form, emotion, and narrative depth. All images, videos, web design and code by
+          yours truly (unless otherwise stated)</p>
+      </div>
+    </div>
+  </main>
+
+
+
+  <footer>
+    <span>angeles, philippines</span>
+    <span>© 2026 fleur. all rights reserved.</span>
+  </footer>
+
+  <script>
+
+
+    // Contact page diagram functionality
+    const diagram = document.getElementById('diagram');
+    const dimWidth = document.getElementById('dim-width');
+    const dimHeight = document.getElementById('dim-height');
+    const clock = document.getElementById('clock');
+
+    const marginBox = document.getElementById('margin-box');
+    const borderBox = document.getElementById('border-box');
+    const paddingBox = document.getElementById('padding-box');
+
+    const marginLabel = document.getElementById('margin-label');
+    const borderLabel = document.getElementById('border-label');
+    const paddingLabel = document.getElementById('padding-label');
+
+    function updateDimensions() {
+      const width = diagram.offsetWidth;
+      const height = diagram.offsetHeight;
+      dimWidth.textContent = width + ' × ' + height;
+      dimHeight.textContent = height + 'px';
+    }
+
+    function updateClock() {
+      const now = new Date();
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+      clock.textContent = hours + ':' + minutes + ':' + seconds;
+    }
+
+    function getLayerInsets() {
+      const width = window.innerWidth;
+      if (width <= 480) {
+        return { margin: 0, border: 12, padding: 24 };
+      } else if (width <= 768) {
+        return { margin: 0, border: 16, padding: 32 };
+      } else if (width <= 1024) {
+        return { margin: 0, border: 20, padding: 40 };
+      } else {
+        return { margin: 0, border: 24, padding: 48 };
+      }
+    }
+
+    function clearHighlights() {
+      marginBox.classList.remove('active');
+      borderBox.classList.remove('active');
+      paddingBox.classList.remove('active');
+      marginLabel.classList.remove('active');
+      borderLabel.classList.remove('active');
+      paddingLabel.classList.remove('active');
+    }
+
+    function handleMouseMove(e) {
+      const rect = diagram.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const width = rect.width;
+      const height = rect.height;
+
+      const insets = getLayerInsets();
+
+      const distToMargin = Math.min(x, y, width - x, height - y);
+      const distToBorder = Math.min(
+        x - insets.border,
+        y - insets.border,
+        (width - insets.border) - x,
+        (height - insets.border) - y
+      );
+      const distToPadding = Math.min(
+        x - insets.padding,
+        y - insets.padding,
+        (width - insets.padding) - x,
+        (height - insets.padding) - y
+      );
+
+      clearHighlights();
+
+      if (distToMargin < insets.border) {
+        marginBox.classList.add('active');
+        marginLabel.classList.add('active');
+      } else if (distToBorder >= 0 && distToBorder < (insets.padding - insets.border)) {
+        borderBox.classList.add('active');
+        borderLabel.classList.add('active');
+      } else if (distToPadding >= 0) {
+        paddingBox.classList.add('active');
+        paddingLabel.classList.add('active');
+      }
+    }
+
+    function handleMouseLeave() {
+      clearHighlights();
+    }
+
+    diagram.addEventListener('mousemove', handleMouseMove);
+    diagram.addEventListener('mouseleave', handleMouseLeave);
+
+    updateDimensions();
+    updateClock();
+
+    // Align bio right edge with "for inquiries" left edge
+    function alignBio() {
+      const annotation = document.querySelector('.top-right-annotation');
+      const bio = document.querySelector('.bottom-left-bio');
+      const container = document.getElementById('diagram');
+      if (!annotation || !bio || !container) return;
+      const containerRect = container.getBoundingClientRect();
+      const annotationRect = annotation.getBoundingClientRect();
+      const rightOffset = containerRect.right - annotationRect.left;
+      bio.style.right = rightOffset + 'px';
+    }
+    alignBio();
+
+    setInterval(updateClock, 1000);
+
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => { updateDimensions(); alignBio(); }, 50);
+    });
+
+
+  </script>
+
+</body>
+
+<!-- Mirrored from www.komal-yadav.com/contact.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 02 Jun 2026 18:36:29 GMT -->
+
+</html>
