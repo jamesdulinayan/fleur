@@ -24,7 +24,6 @@
         bring nature's beauty into your space with exquisite bouquets.</p>
       <nav>
         <a href="index.html">home</a>
-        <a href="flowers.html">flowers</a>
         <a href="packages.html">packages</a>
         <a href="contact.html">contact</a>
       </nav>
@@ -38,31 +37,63 @@
       <!-- Service rows -->
       <div class="services-table">
         <div class="service-row">
-          <span class="service-number">01</span>
-          <span class="service-meta">gift / everyday</span>
-          <span class="service-name">Bespoke Bouquets</span>
-          <span class="service-detail">hand-tied & wrapped</span>
+          <div class="service-header">
+            <span class="service-number">01</span>
+            <span class="service-meta">gift / everyday</span>
+            <span class="service-name">Bespoke Bouquets</span>
+            <span class="service-detail">hand-tied & wrapped</span>
+          </div>
+          <div class="accordion-content">
+            <div class="accordion-inner">
+              <p class="accordion-description">Carefully curated seasonal blooms arranged with our signature aesthetic. Perfect for gifts, celebrations, or treating yourself.</p>
+              <p class="accordion-price">Starting at ₱1,500</p>
+            </div>
+          </div>
         </div>
 
         <div class="service-row">
-          <span class="service-number">02</span>
-          <span class="service-meta">party / occasion</span>
-          <span class="service-name">Event Floral Styling</span>
-          <span class="service-detail">full setup</span>
+          <div class="service-header">
+            <span class="service-number">02</span>
+            <span class="service-meta">party / event</span>
+            <span class="service-name">Event Floral Styling</span>
+            <span class="service-detail">full setup</span>
+          </div>
+          <div class="accordion-content">
+            <div class="accordion-inner">
+              <p class="accordion-description">Comprehensive floral design for intimate gatherings to large events. We handle everything from concept to full installation.</p>
+              <p class="accordion-price">Starting at ₱25,000</p>
+            </div>
+          </div>
         </div>
 
         <div class="service-row">
-          <span class="service-number">03</span>
-          <span class="service-meta">wedding / proposal</span>
-          <span class="service-name">Wedding Florals</span>
-          <span class="service-detail">bridal & venue</span>
+          <div class="service-header">
+            <span class="service-number">03</span>
+            <span class="service-meta">wedding / proposal</span>
+            <span class="service-name">Wedding Florals</span>
+            <span class="service-detail">bridal & venue</span>
+          </div>
+          <div class="accordion-content">
+            <div class="accordion-inner">
+              <p class="accordion-description">Bespoke floral storytelling for your special day. Includes bridal bouquets, boutonnieres, centerpieces, and venue installations.</p>
+              <p class="accordion-price">Starting at ₱50,000</p>
+            </div>
+          </div>
         </div>
 
         <div class="service-row">
-          <span class="service-number">04</span>
-          <span class="service-meta">recurring / delivery</span>
-          <span class="service-name">Flower Subscriptions</span>
-          <span class="service-detail">weekly & monthly</span>
+          <div class="service-header">
+            <span class="service-number">04</span>
+            <span class="service-meta">recurring / delivery</span>
+            <span class="service-name">Flower Subscriptions</span>
+            <span class="service-detail">weekly & monthly</span>
+          </div>
+          <div class="accordion-content">
+            <div class="accordion-inner">
+              <p class="accordion-description">Fresh, seasonal arrangements delivered straight to your door on a weekly, bi-weekly, or monthly basis.</p>
+              <p class="accordion-price">Starting at ₱1,200/delivery</p>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -79,6 +110,29 @@
     <span>angeles, philippines</span>
     <span>© 2026 fleur. all rights reserved.</span>
   </footer>
+
+  <script>
+    document.querySelectorAll('.service-row').forEach(row => {
+      row.addEventListener('click', () => {
+        // Close others
+        document.querySelectorAll('.service-row').forEach(r => {
+          if (r !== row) {
+            r.classList.remove('expanded');
+            r.querySelector('.accordion-content').style.maxHeight = null;
+          }
+        });
+
+        // Toggle current
+        row.classList.toggle('expanded');
+        const content = row.querySelector('.accordion-content');
+        if (row.classList.contains('expanded')) {
+          content.style.maxHeight = content.scrollHeight + "px";
+        } else {
+          content.style.maxHeight = null;
+        }
+      });
+    });
+  </script>
 
 </body>
 

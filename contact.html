@@ -11,6 +11,7 @@
   <title>fleur. - contact</title>
   <link rel="preload" href="css/shared.css" as="style">
   <link rel="preload" href="css/contact.css" as="style">
+  <link rel="preload" href="background-2.webp" as="image">
   <link rel="stylesheet" href="css/shared.css">
   <link rel="stylesheet" href="css/contact.css">
 </head>
@@ -23,7 +24,6 @@
       <p class="bio">fleur is a bespoke floral service offering curated, artful arrangements for every occasion. we bring nature's beauty into your space with exquisite bouquets.</p>
       <nav>
         <a href="index.html">home</a>
-        <a href="flowers.html">flowers</a>
         <a href="packages.html">packages</a>
         <a href="contact.html">contact</a>
       </nav>
@@ -32,49 +32,12 @@
 
   <main>
     <div class="diagram-container" id="diagram">
-      <!-- Dimension labels -->
-      <span class="dimension-label dimension-width" id="dim-width"></span>
-      <span class="dimension-label dimension-height" id="dim-height"></span>
 
-      <!-- Box model layers -->
-      <div class="box-layer margin-box" id="margin-box"></div>
-      <div class="box-layer border-box" id="border-box"></div>
-      <div class="box-layer padding-box" id="padding-box"></div>
 
-      <!-- Layer labels -->
-      <span class="layer-label margin-label" id="margin-label">margin</span>
-      <span class="layer-label border-label" id="border-label">border</span>
-      <span class="layer-label padding-label" id="padding-label">padding</span>
-
-      <!-- Top-right annotation -->
-      <div class="top-right-annotation annotation">
-        for inquiries and commissions
-      </div>
-
-      <!-- Center clock -->
-      <div class="center-clock" id="clock"></div>
-
-      <!-- Right-side annotations -->
-      <div class="right-annotation annotation">
-        <div class="links">
-          <div><a href="https://www.patreon.com/KomalYadav" target="_blank">patreon</a></div>
-          <div><a href="https://instagram.com/komalyad.av" target="_blank">instagram</a></div>
-          <div><a href="https://www.tiktok.com/@komalyad.av" target="_blank">tiktok</a></div>
-          <div><a href="https://www.linkedin.com/in/komaly/" target="_blank">linkedin</a></div>
-          <div><a href="https://www.youtube.com/@iso-komal" target="_blank">youtube</a></div>
-          <div><a href="mailto:komalyadav.studio@gmail.com">email</a></div>
-        </div>
-      </div>
-
-      <!-- Bottom-left bio text -->
+      <!-- Bottom-left contact text -->
       <div class="bottom-left-bio annotation">
-        <p>Focused on creating thoughtful digital work that blends craftsmanship, culture, and modern design — aspiring
-          to collaborate with luxury houses and creative studios. With a training in software engineering shaped by <a
-            href="https://www.linkedin.com/in/komaly/" target="_blank">UC Berkeley and Microsoft</a>, I bring a deep
-          technical foundation to my creative practice.</p>
-        <p>My work draws inspiration from the intersection of technology, art, and lived experience, exploring how
-          digital mediums can convey form, emotion, and narrative depth. All images, videos, web design and code by
-          yours truly (unless otherwise stated)</p>
+        <p>We would love to hear from you. Whether you're inquiring about bespoke bouquets, full-scale event styling, or our recurring flower subscriptions, we are here to bring your floral vision to life.</p>
+        <p>Please reach out to us at <a href="mailto:fleur.angeles@gmail.com">fleur.angeles@gmail.com</a> and we will respond as soon as possible.</p>
       </div>
     </div>
   </main>
@@ -87,128 +50,107 @@
   </footer>
 
   <script>
+    const imageData = [
+      'img/054003dd67b55e819b22521ff9458bbf.jpg',
+      'img/0d0739f30f2ff5eef5b02487c89e520b.jpg',
+      'img/2ad8b16c6fe46c941c9c9c217c9d9dc9.jpg',
+      'img/3ca0317f2b656c546de6f8172dbb6215.jpg',
+      'img/5a87e78bbe1f3b272df0105bf6d13633.jpg',
+      'img/98595221cd77ef2cb9c266f9c8429f82.jpg',
+      'img/b61a91e7ddcf48ea9d461dcdb9b2bdb1.jpg',
+      'img/bca471ffaa1527106205a2c6e7812b1e.jpg',
+      'img/bcc106cc35eacf93a23d0286d7013e59.jpg',
+      'img/e4c2fa854bffafe77b25e014ea99c2ac.jpg'
+    ];
 
-
-    // Contact page diagram functionality
-    const diagram = document.getElementById('diagram');
-    const dimWidth = document.getElementById('dim-width');
-    const dimHeight = document.getElementById('dim-height');
-    const clock = document.getElementById('clock');
-
-    const marginBox = document.getElementById('margin-box');
-    const borderBox = document.getElementById('border-box');
-    const paddingBox = document.getElementById('padding-box');
-
-    const marginLabel = document.getElementById('margin-label');
-    const borderLabel = document.getElementById('border-label');
-    const paddingLabel = document.getElementById('padding-label');
-
-    function updateDimensions() {
-      const width = diagram.offsetWidth;
-      const height = diagram.offsetHeight;
-      dimWidth.textContent = width + ' × ' + height;
-      dimHeight.textContent = height + 'px';
+    function rectsOverlap(r1, r2, margin = 30) {
+      return !(r1.right + margin < r2.left || 
+               r1.left > r2.right + margin || 
+               r1.bottom + margin < r2.top || 
+               r1.top > r2.bottom + margin);
     }
 
-    function updateClock() {
-      const now = new Date();
-      const hours = String(now.getHours()).padStart(2, '0');
-      const minutes = String(now.getMinutes()).padStart(2, '0');
-      const seconds = String(now.getSeconds()).padStart(2, '0');
-      clock.textContent = hours + ':' + minutes + ':' + seconds;
+    function getImageSize() {
+      const minDim = Math.min(window.innerWidth, window.innerHeight);
+      if (window.innerWidth <= 768) return minDim * 0.35;
+      return minDim * 0.25;
     }
 
-    function getLayerInsets() {
-      const width = window.innerWidth;
-      if (width <= 480) {
-        return { margin: 0, border: 12, padding: 24 };
-      } else if (width <= 768) {
-        return { margin: 0, border: 16, padding: 32 };
-      } else if (width <= 1024) {
-        return { margin: 0, border: 20, padding: 40 };
-      } else {
-        return { margin: 0, border: 24, padding: 48 };
-      }
+    function scatterImages() {
+      const shuffled = [...imageData].sort(() => 0.5 - Math.random());
+      const imageCount = window.innerWidth <= 768 ? 3 : 4;
+      const selected = shuffled.slice(0, imageCount);
+      
+      const placedRects = [];
+      const bioText = document.querySelector('.bottom-left-bio');
+      const header = document.querySelector('header');
+      const footer = document.querySelector('footer');
+      
+      if (bioText) placedRects.push(bioText.getBoundingClientRect());
+      if (header) placedRects.push(header.getBoundingClientRect());
+      if (footer) placedRects.push(footer.getBoundingClientRect());
+
+      const size = getImageSize();
+      const padding = 20;
+
+      selected.forEach((src, index) => {
+        const imgContainer = document.createElement('div');
+        imgContainer.className = 'scattered-image';
+        const img = document.createElement('img');
+        img.src = src;
+        imgContainer.appendChild(img);
+        
+        document.body.appendChild(imgContainer);
+
+        const approxWidth = size * 0.8; // conservative width
+        const approxHeight = size;
+        
+        let attempts = 0;
+        let placed = false;
+        let finalLeft = 0;
+        let finalTop = 0;
+
+        while (!placed && attempts < 100) {
+          finalLeft = padding + Math.random() * (window.innerWidth - approxWidth - padding * 2);
+          finalTop = padding + (header ? header.getBoundingClientRect().height : 0) + Math.random() * (window.innerHeight - (header ? header.getBoundingClientRect().height : 0) - approxHeight - padding * 2);
+          
+          const testRect = {
+            left: finalLeft,
+            top: finalTop,
+            right: finalLeft + approxWidth,
+            bottom: finalTop + approxHeight
+          };
+
+          let overlaps = false;
+          for (const r of placedRects) {
+            if (rectsOverlap(testRect, r)) {
+              overlaps = true;
+              break;
+            }
+          }
+
+          if (!overlaps) {
+            placed = true;
+            placedRects.push(testRect);
+          }
+          attempts++;
+        }
+
+        // Apply final positions
+        imgContainer.style.left = finalLeft + 'px';
+        imgContainer.style.top = finalTop + 'px';
+        imgContainer.style.width = approxWidth + 'px';
+        imgContainer.style.height = approxHeight + 'px';
+        
+        // Staggered fade in
+        setTimeout(() => {
+          imgContainer.classList.add('visible');
+        }, index * 200 + 100);
+      });
     }
 
-    function clearHighlights() {
-      marginBox.classList.remove('active');
-      borderBox.classList.remove('active');
-      paddingBox.classList.remove('active');
-      marginLabel.classList.remove('active');
-      borderLabel.classList.remove('active');
-      paddingLabel.classList.remove('active');
-    }
-
-    function handleMouseMove(e) {
-      const rect = diagram.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      const width = rect.width;
-      const height = rect.height;
-
-      const insets = getLayerInsets();
-
-      const distToMargin = Math.min(x, y, width - x, height - y);
-      const distToBorder = Math.min(
-        x - insets.border,
-        y - insets.border,
-        (width - insets.border) - x,
-        (height - insets.border) - y
-      );
-      const distToPadding = Math.min(
-        x - insets.padding,
-        y - insets.padding,
-        (width - insets.padding) - x,
-        (height - insets.padding) - y
-      );
-
-      clearHighlights();
-
-      if (distToMargin < insets.border) {
-        marginBox.classList.add('active');
-        marginLabel.classList.add('active');
-      } else if (distToBorder >= 0 && distToBorder < (insets.padding - insets.border)) {
-        borderBox.classList.add('active');
-        borderLabel.classList.add('active');
-      } else if (distToPadding >= 0) {
-        paddingBox.classList.add('active');
-        paddingLabel.classList.add('active');
-      }
-    }
-
-    function handleMouseLeave() {
-      clearHighlights();
-    }
-
-    diagram.addEventListener('mousemove', handleMouseMove);
-    diagram.addEventListener('mouseleave', handleMouseLeave);
-
-    updateDimensions();
-    updateClock();
-
-    // Align bio right edge with "for inquiries" left edge
-    function alignBio() {
-      const annotation = document.querySelector('.top-right-annotation');
-      const bio = document.querySelector('.bottom-left-bio');
-      const container = document.getElementById('diagram');
-      if (!annotation || !bio || !container) return;
-      const containerRect = container.getBoundingClientRect();
-      const annotationRect = annotation.getBoundingClientRect();
-      const rightOffset = containerRect.right - annotationRect.left;
-      bio.style.right = rightOffset + 'px';
-    }
-    alignBio();
-
-    setInterval(updateClock, 1000);
-
-    let resizeTimeout;
-    window.addEventListener('resize', () => {
-      clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(() => { updateDimensions(); alignBio(); }, 50);
-    });
-
-
+    // Run when the window has fully loaded
+    window.addEventListener('load', scatterImages);
   </script>
 
 </body>

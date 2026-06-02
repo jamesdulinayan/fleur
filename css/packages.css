@@ -60,14 +60,19 @@ main {
 }
 
 .service-row {
-  display: grid;
-  grid-template-columns: 32px 140px 1fr auto;
-  align-items: baseline;
   padding: 12px 0;
   border-top: 1px solid #f0f0f0;
   border-bottom: none;
-  gap: 20px;
+  cursor: pointer;
   transition: transform 0.3s ease, border-color 0.3s ease;
+  position: relative;
+}
+
+.service-header {
+  display: grid;
+  grid-template-columns: 32px 140px 1fr auto;
+  align-items: baseline;
+  gap: 20px;
 }
 
 @media (min-width: 769px) {
@@ -139,6 +144,31 @@ main {
   text-align: right;
 }
 
+/* Accordion Content */
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease-out;
+}
+
+.accordion-inner {
+  padding: 15px 0 10px 192px; /* aligns with service name: 32+20+140 */
+}
+
+.accordion-description {
+  font-size: 12px;
+  color: #666;
+  line-height: 1.4;
+  margin-bottom: 8px;
+  max-width: 400px;
+}
+
+.accordion-price {
+  font-size: 11px;
+  color: #000;
+  font-weight: 500;
+}
+
 /* CTA row */
 .cta-row {
   margin-top: 24px;
@@ -179,10 +209,13 @@ main {
     max-width: 560px;
   }
 
-  .service-row {
+  .service-header {
     grid-template-columns: 30px 120px 1fr auto;
     gap: 16px;
-    padding: 11px 0;
+  }
+  
+  .accordion-inner {
+    padding-left: 166px;
   }
 
   .service-name {
@@ -239,6 +272,10 @@ main {
     border-top: 1px solid #e0e0e0;
   }
 
+  .service-header {
+    display: block;
+  }
+
   .service-row:first-child {
     border-top: 1px solid #ccc;
   }
@@ -275,6 +312,19 @@ main {
     color: #aaa;
     display: block;
     margin-top: 1px;
+  }
+  
+  .accordion-inner {
+    padding-left: 0;
+    padding-top: 8px;
+  }
+  
+  .accordion-description {
+    font-size: 10px;
+  }
+  
+  .accordion-price {
+    font-size: 9px;
   }
 
   .cta-row {
