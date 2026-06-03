@@ -34,6 +34,7 @@ main {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -44,7 +45,6 @@ header {
 }
 
 footer {
-  padding: 15px 40px;
   position: relative;
   z-index: 10;
 }
@@ -274,27 +274,23 @@ main {
 /* Responsive overrides for home page */
 @media (max-width: 1024px) {
   .name {
-    font-size: 60px;
     letter-spacing: -2px;
   }
-  
+
   header {
-    padding: 20px 30px 15px 30px;
+    padding: 20px;
   }
-  
+
   .bio {
-    font-size: 12px;
     max-width: 250px;
   }
-  
+
   nav {
     gap: 20px;
-    font-size: 12px;
   }
-  
+
   footer {
-    padding: 12px 30px;
-    font-size: 10px;
+    padding: 20px;
   }
 
   .collection-container {
@@ -318,18 +314,18 @@ main {
     aspect-ratio: 1;
   }
 
-  .collection-title {
-    font-size: 14px;
-  }
+  .collection-title {}
 
-  .collection-description {
-    font-size: 11px;
-  }
+  .collection-description {}
 }
 
 @media (max-width: 768px) {
   body {
     overflow: hidden;
+  }
+
+  .bio {
+    max-width: 250px;
   }
 
   main {
@@ -341,7 +337,7 @@ main {
     bottom: 0;
     right: 0;
     left: auto;
-    padding: 15px 20px;
+
     z-index: 20;
     flex-direction: column;
     align-items: flex-end;
@@ -402,13 +398,10 @@ main {
   }
 
   .collection-title {
-    font-size: 14px;
     margin-bottom: 10px;
   }
 
-  .collection-description {
-    font-size: 11px;
-  }
+  .collection-description {}
 
   .collection-close {
     top: 15px;
@@ -422,32 +415,30 @@ main {
   }
 
   .collection-container {
+    .collection-grid {
+      gap: 8px;
+      max-height: 40vh;
+      max-width: 240px;
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .collection-grid img {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+      aspect-ratio: 1;
+    }
+
+    padding: 25px 20px;
+  }
+
   .collection-grid {
     gap: 8px;
     max-height: 40vh;
     max-width: 240px;
-    grid-template-columns: repeat(2, 1fr);
   }
 
-  .collection-grid img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    aspect-ratio: 1;
-  } padding: 25px 20px;
-  }
+  .collection-title {}
 
-  .collection-grid {
-    gap: 8px;
-    max-height: 40vh;
-    max-width: 240px;
-  }
-
-  .collection-title {
-    font-size: 13px;
-  }
-
-  .collection-description {
-    font-size: 10px;
-  }
+  .collection-description {}
 }

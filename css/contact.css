@@ -31,7 +31,6 @@ header {
 }
 
 footer {
-  padding: 15px 40px;
   position: relative;
   z-index: 10;
 }
@@ -162,12 +161,26 @@ main {
 .annotation a {
   color: #1a1a1a;
   text-decoration: none;
-  border-bottom: 1px solid transparent;
-  transition: border-color 0.2s ease;
+  padding-bottom: 2px;
+  position: relative;
 }
 
-.annotation a:hover {
-  border-bottom-color: #1a1a1a;
+.annotation a::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  bottom: 0;
+  left: 0;
+  background-color: #1a1a1a;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.6s ease;
+}
+
+.annotation a:hover::before {
+  transform: scaleX(1);
+  transform-origin: right;
 }
 
 .top-right-annotation {
@@ -212,7 +225,7 @@ main {
 }
 
 .bottom-left-bio p {
-  font-size: 11px;
+  font-size: 13px;
   line-height: 1.3;
   margin-bottom: 8px;
 }
@@ -238,7 +251,8 @@ main {
   opacity: 0;
   transition: opacity 1s ease;
   pointer-events: none;
-  z-index: 1; /* Below text */
+  z-index: 1;
+  /* Below text */
 }
 
 .scattered-image.visible {
@@ -249,7 +263,7 @@ main {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.05));
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.05));
 }
 
 /* Responsive overrides for contact page */
@@ -262,13 +276,11 @@ main {
   .top-right-annotation {
     top: 70px;
     right: 70px;
-    font-size: 12px;
   }
 
   .right-annotation {
     right: 70px;
     bottom: 70px;
-    font-size: 12px;
   }
 
   .bottom-left-bio {
@@ -277,13 +289,9 @@ main {
     max-width: 220px;
   }
 
-  .center-clock {
-    font-size: 12px;
-  }
+  .center-clock {}
 
-  .dimension-label {
-    font-size: 9px;
-  }
+  .dimension-label {}
 }
 
 @media (max-width: 768px) {
@@ -302,8 +310,7 @@ main {
   }
 
   footer {
-    padding: 4px 15px;
-    flex-shrink: 0;
+    padding: 20px;
   }
 
   .diagram-container {

@@ -45,7 +45,7 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: stretch;
-  padding: 30px 40px 20px 40px;
+  padding: 20px 40px;
   position: relative;
   z-index: 10;
 }
@@ -144,7 +144,7 @@ footer {
   padding: 20px 40px;
   display: flex;
   justify-content: space-between;
-  font-size: 11px;
+  font-size: 10px;
   color: #666;
   line-height: 1.3;
 }
@@ -221,27 +221,23 @@ footer a {
 /* Tablet styles */
 @media (max-width: 1024px) {
   .name {
-    font-size: 60px;
     letter-spacing: -2px;
   }
 
   header {
-    padding: 20px 30px 15px 30px;
+    padding: 20px;
   }
 
   .bio {
-    font-size: 12px;
     max-width: 250px;
   }
 
   nav {
     gap: 20px;
-    font-size: 12px;
   }
 
   footer {
-    padding: 12px 30px;
-    font-size: 10px;
+    padding: 20px;
   }
 }
 
@@ -249,13 +245,11 @@ footer a {
 @media (max-width: 768px) {
   .name {
     font-size: 48px;
-    letter-spacing: -1px;
   }
 
   header {
     flex-direction: column;
     gap: 15px;
-    padding: 15px 20px 5px 20px;
     align-items: flex-start;
   }
 
@@ -267,10 +261,8 @@ footer a {
   .bio {
     margin-left: 0;
     text-align: left;
-    max-width: 45%;
+    max-width: 250px;
     margin-bottom: 12px;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
   }
 
   nav {
@@ -283,23 +275,14 @@ footer a {
   }
 
   footer {
-    padding: 8px 15px;
-    flex-direction: row;
-    gap: 0;
-    font-size: 7px;
-    justify-content: space-between;
-    white-space: nowrap;
+
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
   }
 
   footer span {
     flex: none;
-  }
-
-  footer span:nth-child(2) {
-    text-align: left;
-  }
-
-  footer span:last-child {
     text-align: right;
   }
 
@@ -312,14 +295,6 @@ footer a {
 @media (max-width: 480px) {
   .name {
     font-size: 36px;
-  }
-
-  header {
-    padding: 15px;
-  }
-
-  .bio {
-    max-width: 60%;
   }
 
   .cursor-follower {
