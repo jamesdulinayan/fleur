@@ -40,14 +40,7 @@ main {
   }
 }
 
-header {
-  z-index: 10;
-}
 
-footer {
-  position: relative;
-  z-index: 10;
-}
 
 main {
   flex: 1;
@@ -277,9 +270,7 @@ main {
     letter-spacing: -2px;
   }
 
-  header {
-    padding: 20px;
-  }
+
 
   .bio {
     max-width: 250px;
@@ -289,9 +280,7 @@ main {
     gap: 20px;
   }
 
-  footer {
-    padding: 20px;
-  }
+
 
   .collection-container {
     padding: 60px 50px;
@@ -324,6 +313,8 @@ main {
     overflow: hidden;
   }
 
+
+
   .bio {
     max-width: 250px;
   }
@@ -332,18 +323,7 @@ main {
     overflow: hidden;
   }
 
-  footer {
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    left: auto;
 
-    z-index: 20;
-    flex-direction: column;
-    align-items: flex-end;
-    text-align: right;
-    gap: 2px;
-  }
 
   /* Ensure images have more spacing on mobile */
   .image-container {

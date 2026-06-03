@@ -26,14 +26,7 @@ body {
   }
 }
 
-header {
-  z-index: 10;
-}
 
-footer {
-  position: relative;
-  z-index: 10;
-}
 
 main {
   flex: 1;
@@ -42,6 +35,8 @@ main {
   justify-content: center;
   padding: 20px;
   overflow: hidden;
+  position: relative;
+  z-index: 2;
 }
 
 .diagram-container {
@@ -309,9 +304,7 @@ main {
     overflow: hidden;
   }
 
-  footer {
-    padding: 20px;
-  }
+
 
   .diagram-container {
     width: 100%;

@@ -251,6 +251,7 @@ footer a {
     flex-direction: column;
     gap: 15px;
     align-items: flex-start;
+    padding: 10px 20px;
   }
 
   .header-right {
@@ -275,7 +276,12 @@ footer a {
   }
 
   footer {
-
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: auto;
+    padding: 10px 20px;
+    z-index: 20;
     flex-direction: column;
     align-items: flex-end;
     gap: 2px;
