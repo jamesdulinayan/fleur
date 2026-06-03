@@ -137,6 +137,11 @@
           attempts++;
         }
 
+        if (!placed) {
+          imgContainer.remove();
+          return;
+        }
+
         // Apply final positions
         imgContainer.style.left = finalLeft + 'px';
         imgContainer.style.top = finalTop + 'px';
